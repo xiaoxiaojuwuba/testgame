@@ -82,6 +82,7 @@ public class JavaBilliards extends Panel implements Runnable, MouseListener,//ex
 
     private int A;//该参数是为了让辅助线看上去“动起来”，是按时间增减的变量
 	
+    private Color ballColor[]= {Color.WHITE,Color.YELLOW,Color.BLUE,Color.RED,Color.MAGENTA,Color.ORANGE,Color.GREEN,Color.RED.darker(),Color.BLACK,Color.YELLOW,Color.BLUE,Color.RED,Color.MAGENTA,Color.ORANGE,Color.GREEN,Color.RED.darker()};
     /**
      * 初始化
      * 
@@ -141,6 +142,7 @@ public class JavaBilliards extends Panel implements Runnable, MouseListener,//ex
         xInMiddle=(xInLeftBound+ xInRightBound)/2;//桌框内边界中心x坐标
         yInTopBound=yTopBound + 20D;//桌框内边界上边线y坐标
         yInBottomBound=yBottomBound - 20D ;//桌框内边界下边线y坐标
+        
     }
 
     /**
@@ -477,11 +479,18 @@ public class JavaBilliards extends Panel implements Runnable, MouseListener,//ex
         screenGraphics.setColor(Color.RED);//画还在场的被打的球
         for (int i1 = 1; i1 < countBall; i1++)
             if (exist[i1])
-            { screenGraphics.fillOval((int) (xPosition[i1] - ballRound), (int) (yPosition[i1] - ballRound),
+            { screenGraphics.setColor(ballColor[i1]);//按色画球
+            	screenGraphics.fillOval((int) (xPosition[i1] - ballRound), (int) (yPosition[i1] - ballRound),
                         (int) (ballRound * 2D), (int) (ballRound * 2D));
+            	screenGraphics.setColor(ballColor[0]);
+            	screenGraphics.fillOval((int) (xPosition[i1] -0.6*ballRound), (int) (yPosition[i1] -0.6*ballRound),
+                        (int) (ballRound * 1.2D), (int) (ballRound * 1.2D));
             screenGraphics.setColor(Color.BLACK);
-            screenGraphics.setFont(new Font("黑体", Font.PLAIN, 16));
-            screenGraphics.drawString(i1+"", (int)(xPosition[i1]-3),(int)(yPosition[i1])+3);
+            screenGraphics.setFont(new Font("黑体", Font.BOLD, 16));
+            if(i1<10)
+            screenGraphics.drawString(i1+"", (int)(xPosition[i1]-3),(int)(yPosition[i1])+5);
+            else
+            	screenGraphics.drawString(i1+"", (int)(xPosition[i1]-8),(int)(yPosition[i1])+5);
             screenGraphics.setColor(Color.RED);
             }
         
@@ -499,12 +508,10 @@ public class JavaBilliards extends Panel implements Runnable, MouseListener,//ex
         if (state == 0) {
             int k1 = getWidth() / 2 - 85;
             int l1 = getHeight() / 2;
-            screenGraphics.setColor(Color.BLACK);
-            screenGraphics.drawString("点击画面开始", k1 + 2, l1 + 2);
-           
-                screenGraphics.setColor(Color.YELLOW);
+
+                screenGraphics.setColor(Color.ORANGE);
      
-            screenGraphics.drawString("点击画面开始", k1, l1);
+            screenGraphics.drawString("桌球6.10.1   点击画面开始", k1, l1);
         }//这里还整了个文字变换颜色显示
     }
 
