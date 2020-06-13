@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Panel;
@@ -49,47 +50,48 @@ public class Billiards extends Panel {
 		balls[0] = setWhiteBall(inTble);
 		sethitObjectBalls(inTble);
 
-		repaint();
+		// repaint();
 	}
 
 	private Ball setWhiteBall(Tble table) {
 		Ball ball = new Ball(radius);
-		ball.setxPosition(table.getxLeftPosition() + (table.getWidth() - table.getxLeftPosition()) / 3D);
-		ball.setyPosition(table.getyTopPosition() + (table.getHeight() - table.getyTopPosition()) / 2D);
+		ball.setxPosition(table.getxLeftPosition() + (table.getWidth() / 3D));
+		ball.setyPosition(table.getyTopPosition() + (table.getHeight()) / 2D);
 		ball.setxSpeed(0.0D);
 		ball.setySpeed(0.0D);
+		ball.setColor(ballColor[0]);
 		ball.setExist(true);
 		return ball;
 	}
 
 	private void sethitObjectBalls(Tble table) {
 		double ballxspace = Math.sqrt(3D) * radius;
-		for (int i = 1; i < balls.length; i++) {
 
-			for (int j = 0; j < 5; j++) {
+		for (int j = 0, i = 1; j < 5; j++) {
 
-				double xPosition = (double) (table.getWidth() + (table.getWidth() - table.getxLeftPosition()) * 2D / 3D)
-						+ (double) j * ballxspace;
-				double yPosition = (double) (table.getHeight() + (table.getHeight() - table.getyTopPosition()) / 2D)
-						- (double) j * radius;
-				for (int k = 0; k <= j; k++) {
-					balls[i] = new Ball(radius);
-					balls[i].setxPosition(xPosition);
-					balls[i].setyPosition(yPosition);
-					balls[i].setxSpeed(0.0D);
-					balls[i].setySpeed(0.0D);
-					balls[i].setExist(true);
-					balls[i].setColor(ballColor[i]);
-					yPosition += 2.0D * radius;
-				}
+			double xPosition = (double) (table.getxLeftPosition() + (table.getWidth() * 2D / 3D))
+					+ (double) j * ballxspace;
+			double yPosition = (double) (table.getyTopPosition() + (table.getHeight() / 2D)) - (double) j * radius;
+			for (int k = 0; k <= j; k++) {
+				balls[i] = new Ball(radius);
+				balls[i].setxPosition(xPosition);
+				balls[i].setyPosition(yPosition);
+				balls[i].setxSpeed(0.0D);
+				balls[i].setySpeed(0.0D);
+				balls[i].setExist(true);
+				balls[i].setColor(ballColor[i]);
+				yPosition += 2.0D * radius;
+				i++;
 			}
+
 		}
 	}
 
 	@Override
 	public void paint(Graphics g) {
-
+		g.clearRect(0, 0, 1400, 800);
 		paintTable(g);
+		paintBalls(g);
 	}
 
 	public void paintTable(Graphics g) {
@@ -106,36 +108,44 @@ public class Billiards extends Panel {
 				(int) inTble.getHeight(), false);
 //	 
 		g.setColor(Color.GREEN.darker());// 母球线颜色
-		g.drawLine((int) (inTble.getxLeftPosition() + (inTble.getWidth() - inTble.getxLeftPosition()) / 3D),
-				(int) InBound, (int) (inTble.getxLeftPosition() + (inTble.getWidth() - inTble.getxLeftPosition()) / 3D),
+		g.drawLine((int) (inTble.getxLeftPosition() + (inTble.getWidth() / 3D)), (int) InBound,
+				(int) (inTble.getxLeftPosition() + (inTble.getWidth() / 3D)),
 				(int) (inTble.getyTopPosition() + inTble.getHeight()));
 
-		g.fillOval(
-				(int) ((inTble.getxLeftPosition() + (inTble.getWidth() - inTble.getxLeftPosition()) / 3D)
-						- radius / 4D),
+		g.fillOval((int) ((inTble.getxLeftPosition() + (inTble.getWidth() / 3D)) - radius / 4D),
 				(int) ((inTble.getHeight() / 2D + inTble.getyTopPosition()) - radius / 4D), (int) (radius / 2D),
 				(int) (radius / 2D));
-		g.drawArc(
-				(int) ((inTble.getxLeftPosition() + (inTble.getWidth() - inTble.getxLeftPosition()) / 3D)
-						- (2D * radius)),
+		g.drawArc((int) ((inTble.getxLeftPosition() + (inTble.getWidth() / 3D)) - (2D * radius)),
 				(int) ((inTble.getHeight() / 2D + inTble.getyTopPosition()) - (2D * radius)), (int) (4D * radius),
 				(int) (4D * radius), 90, 180);
 
 		g.setColor(Color.BLACK);
-		double d = radius*4D/5D ;
+		double d = radius * 4D / 5D;
 		g.fillOval((int) (inTble.getxLeftPosition() - d), (int) (inTble.getyTopPosition() - d), (int) (2.5D * d),
 				(int) (2.5D * d));
 		g.fillOval((int) (inTble.getxLeftPosition() - d), (int) (inTble.getyDownPosition() - d), (int) (2.5D * d),
 				(int) (2.5D * d));
-		g.fillOval((int) (inTble.getxLeftPosition()+inTble.getWidth()/2D - d), (int) (inTble.getyTopPosition() - d), (int) (2.5D * d),
-				(int) (2.5D * d));
-		g.fillOval((int)  (inTble.getxLeftPosition()+inTble.getWidth()/2D - d), (int) (inTble.getyDownPosition() - d), (int) (2.5D * d),
-				(int) (2.5D * d));
+		g.fillOval((int) (inTble.getxLeftPosition() + inTble.getWidth() / 2D - d), (int) (inTble.getyTopPosition() - d),
+				(int) (2.5D * d), (int) (2.5D * d));
+		g.fillOval((int) (inTble.getxLeftPosition() + inTble.getWidth() / 2D - d),
+				(int) (inTble.getyDownPosition() - d), (int) (2.5D * d), (int) (2.5D * d));
 		g.fillOval((int) (inTble.getxRightPosition() - d), (int) (inTble.getyTopPosition() - d), (int) (2.5D * d),
 				(int) (2.5D * d));
 		g.fillOval((int) (inTble.getxRightPosition() - d), (int) (inTble.getyDownPosition() - d), (int) (2.5D * d),
 				(int) (2.5D * d));
 
+	}
+
+	public void paintBalls(Graphics g) {
+		for (int i = 0; i < balls.length; i++) {
+			if (balls[i].isExist()) {
+				g.setColor(balls[i].getColor());
+				System.out.println(i);
+				g.fillOval((int) (balls[i].getxPosition() - radius), (int) (balls[i].getyPosition() - radius),
+						(int) (2D * radius), (int) (2D * radius));
+			}
+
+		}
 	}
 
 	public static void main(String[] args) {
